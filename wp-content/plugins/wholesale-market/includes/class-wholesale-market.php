@@ -167,6 +167,13 @@ class Wholesale_Market {
 		$this->loader->add_filter('manage_users_custom_column', $plugin_admin, 'ced_add_value_wholesale_columns', 10, 3);
 		$this->loader->add_action( 'init', $plugin_admin, 'ced_approved_wholesale_customer');
 		$this->loader->add_action( 'init', $plugin_admin, 'ced_add_role_wholesale_customer');
+		//$this->loader->add_action( 'wp_ajax_ced_approve_wholesale_customer',$plugin_admin,  'ced_approved_wholesale_customer' );
+		$this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_admin, 'ced_display_wholesale_price_shop_page');
+		$this->loader->add_action( 'woocommerce_single_product_summary', $plugin_admin, 'ced_display_wholesale_price_single_simple_product' );
+		$this->loader->add_filter( 'woocommerce_available_variation', $plugin_admin, 'ced_show_variation_price',10, 3);
+		$this->loader->add_filter( 'woocommerce_before_calculate_totals', $plugin_admin, 'ced_display_wholesale_price_according_to_qty');
+		
+
 	}
 
 	/**

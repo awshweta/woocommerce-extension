@@ -1,0 +1,36 @@
+2021-01-22T11:44:11+00:00 CRITICAL Uncaught Error: Cannot use object of type WC_Product_Variation as array in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php:453
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Wholesale_Market_Admin->filter_show_variation_price(Array, Object(WC_Product_Variable), Object(WC_Product_Variation))
+#1 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(212): WP_Hook->apply_filters(Array, Array)
+#2 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-product-variable.php(392): apply_filters('woocommerce_ava...', Array, Object(WC_Product_Variable), Object(WC_Product_Variation))
+#3 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-product-variable.php(312): WC_Product_Variable->get_available_variation(Object(WC_Product_Variation))
+#4 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/wc-template-functions.php(1668): WC_Product_Variable->get_available_variations()
+#5 / in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php on line 453
+
+2021-01-22T11:52:05+00:00 CRITICAL Uncaught Error: Call to undefined method WC_Product_Variation::id() in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php:454
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Wholesale_Market_Admin->filter_show_variation_price(Array, Object(WC_Product_Variable), Object(WC_Product_Variation))
+#1 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(212): WP_Hook->apply_filters(Array, Array)
+#2 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-product-variable.php(392): apply_filters('woocommerce_ava...', Array, Object(WC_Product_Variable), Object(WC_Product_Variation))
+#3 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-product-variable.php(312): WC_Product_Variable->get_available_variation(Object(WC_Product_Variation))
+#4 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/wc-template-functions.php(1668): WC_Product_Variable->get_available_variations()
+#5 /opt/ in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php on line 454
+
+2021-01-22T12:01:26+00:00 CRITICAL Uncaught Error: Call to undefined method WC_Product_Variation::post_type() in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php:452
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Wholesale_Market_Admin->filter_show_variation_price(Array, Object(WC_Product_Variable), Object(WC_Product_Variation))
+#1 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(212): WP_Hook->apply_filters(Array, Array)
+#2 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-product-variable.php(392): apply_filters('woocommerce_ava...', Array, Object(WC_Product_Variable), Object(WC_Product_Variation))
+#3 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-product-variable.php(312): WC_Product_Variable->get_available_variation(Object(WC_Product_Variation))
+#4 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/wc-template-functions.php(1668): WC_Product_Variable->get_available_variations()
+# in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php on line 452
+
+2021-01-22T12:23:40+00:00 CRITICAL Uncaught Error: Call to a member function get_id() on array in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php:454
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Wholesale_Market_Admin->filter_show_variation_price(Array, Object(WC_Product_Variable), Object(WC_Product_Variation))
+#1 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(212): WP_Hook->apply_filters(Array, Array)
+#2 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-product-variable.php(392): apply_filters('woocommerce_ava...', Array, Object(WC_Product_Variable), Object(WC_Product_Variation))
+#3 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-product-variable.php(312): WC_Product_Variable->get_available_variation(Object(WC_Product_Variation))
+#4 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/wc-template-functions.php(1668): WC_Product_Variable->get_available_variations()
+#5 /opt/lampp/ht in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php on line 454
+
