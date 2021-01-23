@@ -1,0 +1,22 @@
+2021-01-23T05:42:26+00:00 CRITICAL Uncaught Error: Call to a member function get_type() on null in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php:512
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Wholesale_Market_Admin->ced_display_wholesale_price_according_to_qty(Object(WC_Cart))
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#2 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#3 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-cart.php(1367): do_action('woocommerce_bef...', Object(WC_Cart))
+#4 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/shortcodes/class-wc-shortcode-cart.php(94): WC_Cart->calculate_totals()
+#5 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-shortcodes.php(72): WC_Shortcode_Cart::output(Array)
+#6 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php on line 512
+
+2021-01-23T07:40:25+00:00 CRITICAL Uncaught Error: Call to a member function get_data() on array in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php:520
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Wholesale_Market_Admin->ced_display_wholesale_price_according_to_qty(Object(WC_Cart))
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#2 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#3 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-cart.php(1367): do_action('woocommerce_bef...', Object(WC_Cart))
+#4 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/shortcodes/class-wc-shortcode-cart.php(94): WC_Cart->calculate_totals()
+#5 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-wc-shortcodes.php(72): WC_Shortcode_Cart::output(Array)
+#6 /opt/lampp/htdocs/wordpress/wp-content/plugins/woocommerce/includes/class-w in /opt/lampp/htdocs/wordpress/wp-content/plugins/wholesale-market/admin/class-wholesale-market-admin.php on line 520
+
+2021-01-23T12:29:33+00:00 CRITICAL Object of class Closure could not be converted to string in /opt/lampp/htdocs/wordpress/wp-includes/plugin.php on line 930
+

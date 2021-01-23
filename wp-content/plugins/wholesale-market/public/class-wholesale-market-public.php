@@ -50,7 +50,7 @@ class Wholesale_Market_Public {
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -109,19 +109,223 @@ class Wholesale_Market_Public {
 	public function ced_add_checkbox_become_wholesale() { ?>
 		<p>
 			<input type="checkbox" name="become_wholesale" id="become_wholesale" class="checkbox"/>
-			<label for="become_wholesale"><?php _e( 'Become Wholesale Customer') ?>
+			<label for="become_wholesale"><?php _e( 'Become Wholesale Customer'); ?>
 			</label>
 		</p>
-	<?php } 
+	<?php 
+	} 
 
-	// public function ced_validate_checkbox_field($username, $email, $errors ) {
-	// 	if ( ! isset( $_POST['become_wholesale'] ) )
-    //     $errors->add( 'become_wholesale_error', __( 'become_wholesale are not checked!', 'woocommerce' ) );
-    // 	return $errors;
-	// }
-	public function ced_save_wholesale_checkbox_field($user_id) {
-		if(isset($_POST['become_wholesale'])) {
+		
+	/**
+	 * This function is used to save checkbox(become a wholesale) value 
+	 * ced_save_wholesale_checkbox_field
+	 *
+	 * @param  mixed $user_id
+	 * @return void
+	 */
+	public function ced_save_wholesale_checkbox_field( $user_id) {
+		if (isset($_POST['become_wholesale'])) {
 			update_user_meta( $user_id, 'become_wholesale', sanitize_text_field($_POST['become_wholesale']) );
+		}
+	}
+
+	/**
+	 * This function is used to get wholesale price
+	 * ced_get_wholesale_price
+	 *
+	 * @return void
+	 */
+	public function ced_get_wholesale_price() {
+		global $product;
+		global $post;
+		$product_type                      = $product->get_type();
+		$display_wholesale_prices_customer = get_option('display_wholesale_prices');
+		if ( 'yes' === get_option( 'check_wholesale_price' ) ) {
+			if ( $display_wholesale_prices_customer == 'wholesaleCustomer') {
+				if (is_user_logged_in()) {
+					if (get_user_meta( get_current_user_id(), 'become_wholesale', true) == 'approved') {
+						if ($product_type == 'simple') {
+							if (get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) != '') {
+								echo get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) . get_woocommerce_currency_symbol() . '</br>';
+							}
+						}
+					}
+				}
+			}
+			if ( $display_wholesale_prices_customer == 'allCustomer') {
+				if ($product_type == 'simple') {
+					if (get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) != '') {
+						echo get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) . get_woocommerce_currency_symbol() . '</br>';
+					}
+				}
+			}
+		}
+	}
+
+	
+	/**
+	 * This function is used for display wholesale price on shop page
+	 * ced_display_wholesale_price_shop_page
+	 *
+	 * @return void
+	 */
+	public function ced_display_wholesale_price_shop_page() {
+		$this->ced_get_wholesale_price();
+	}
+	
+	/**
+	 * This function is used for display simple wholesale price on single page
+	 * ced_display_wholesale_price_single_simple_product
+	 *
+	 * @return void
+	 */
+	public function ced_display_wholesale_price_single_simple_product() {
+		$this->ced_get_wholesale_price();
+	}
+	
+	/**
+	 *  This function is used for display variable wholesale price on single page
+	 * ced_show_variation_price
+	 *
+	 * @param  mixed $descriptions
+	 * @param  mixed $product
+	 * @param  mixed $variation
+	 * @return void
+	 */
+	public function ced_show_variation_price( $descriptions, $product, $variation) {
+		global $product;
+		global $post;
+		$variationData                     = $variation->get_data();
+		$product_type                      = $product->get_type();
+		$display_wholesale_prices_customer = get_option('display_wholesale_prices');
+		if ( 'yes' === get_option( 'check_wholesale_price' ) ) {
+			if ( $display_wholesale_prices_customer == 'wholesaleCustomer') {
+				if (is_user_logged_in()) {
+					if (get_user_meta( get_current_user_id(), 'become_wholesale', true) == 'approved') {
+						if ($product_type == 'variable') {
+							//$descriptions['price_html'] = get_post_meta($variationData['id'], 'wholesale_price', true);
+							if (get_post_meta($descriptions['variation_id'], 'wholesale_price', true) != '') {
+									$descriptions['price_html'] = get_post_meta($descriptions['variation_id'], 'wholesale_price', true) . get_woocommerce_currency_symbol() . '</br>';
+							}
+						}
+					}
+				}
+			}
+			if ( $display_wholesale_prices_customer == 'allCustomer') {
+				if ($product_type == 'variable') {
+					if (get_post_meta($descriptions['variation_id'], 'wholesale_price', true) != '') {
+						$descriptions['price_html'] = get_post_meta($descriptions['variation_id'], 'wholesale_price', true) . get_woocommerce_currency_symbol() . '</br>';
+					}
+				}
+			}
+		}
+		return $descriptions;
+	}
+	
+	/**
+	 * This function is used for set price according to qty
+	 * ced_display_wholesale_price_according_to_qty
+	 *
+	 * @param  mixed $desc
+	 * @return void
+	 */
+	public function ced_display_wholesale_price_according_to_qty( $desc) {
+		$display_wholesale_prices_customer = get_option('display_wholesale_prices');
+		$set_wholesale_qty                 =  get_option('set_wholesale_qty');
+		foreach ($desc->get_cart() as $key => $value) {
+			if ( 'yes' === get_option( 'check_wholesale_price' ) ) {
+				if ( 'yes' === get_option( 'wholesale_qty' ) ) {
+					if ( $display_wholesale_prices_customer == 'wholesaleCustomer') {
+						if (is_user_logged_in()) {
+							if (get_user_meta( get_current_user_id(), 'become_wholesale', true) == 'approved') {
+								if ('product_level' === $set_wholesale_qty) {
+									if ($value['data']->get_type() == 'variation') {
+										$get_wholesale_qty = get_post_meta($value['variation_id'], 'wholesale_min_qty', true);
+										if ($get_wholesale_qty <= $value['quantity']) {
+											if (get_post_meta($value['variation_id'], 'wholesale_price', true) != '') {
+												$wholesale_price = get_post_meta($value['variation_id'], 'wholesale_price', true);
+												$value['data']->set_price( $wholesale_price );
+											}
+										}
+									}
+									if ($value['data']->get_type() == 'simple') {
+										$get_simple_wholesale_qty = get_post_meta($value['product_id'], 'wholesale_qty_for_simple_product', true);
+										if ($get_simple_wholesale_qty <= $value['quantity']) {
+											if (get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true) != '') {
+												$wholesale_simple_price = get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true);
+												$value['data']->set_price( $wholesale_simple_price );
+											}
+										}
+									}
+								}
+								if ('all_product' === $set_wholesale_qty) {
+									if ($value['data']->get_type() == 'variation') {
+										$get_wholesale_qty = get_option('set_min_qty_for_all_product');
+										if ($get_wholesale_qty <= $value['quantity']) {
+											if (get_post_meta($value['variation_id'], 'wholesale_price', true) != '') {
+												$wholesale_price = get_post_meta($value['variation_id'], 'wholesale_price', true);
+												$value['data']->set_price( $wholesale_price );
+											}
+										}
+									}
+									if ($value['data']->get_type() == 'simple') {
+										$get_wholesale_qty = get_option('set_min_qty_for_all_product');
+										if ($get_wholesale_qty <= $value['quantity']) {
+											if (get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true) != '') {
+												$wholesale_price = get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true);
+												$value['data']->set_price( $wholesale_price );
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					if ( $display_wholesale_prices_customer == 'allCustomer') {
+						if ('product_level' === $set_wholesale_qty) {
+							if ($value['data']->get_type() == 'variation') {
+								$get_wholesale_qty = get_post_meta($value['variation_id'], 'wholesale_min_qty', true);
+								if ($get_wholesale_qty <= $value['quantity']) {
+									if (get_post_meta($value['variation_id'], 'wholesale_price', true) != '') {
+										$wholesale_price = get_post_meta($value['variation_id'], 'wholesale_price', true);
+										$value['data']->set_price( $wholesale_price );
+									}
+								}
+							}
+							if ($value['data']->get_type() == 'simple') {
+								$get_simple_wholesale_qty = get_post_meta($value['product_id'], 'wholesale_qty_for_simple_product', true);
+								if ($get_simple_wholesale_qty <= $value['quantity']) {
+									if (get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true) != '') {
+										$wholesale_simple_price = get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true);
+										$value['data']->set_price( $wholesale_simple_price );
+									}
+								}
+							}
+						}
+						if ('all_product' === $set_wholesale_qty) {
+							if ($value['data']->get_type() == 'variation') {
+								$get_wholesale_qty = get_option('set_min_qty_for_all_product');
+								if ($get_wholesale_qty <= $value['quantity']) {
+									if (get_post_meta($value['variation_id'], 'wholesale_price', true) != '') {
+										$wholesale_price = get_post_meta($value['variation_id'], 'wholesale_price', true);
+										$value['data']->set_price( $wholesale_price );
+									}
+								}
+							}
+							if ($value['data']->get_type() == 'simple') {
+								$get_wholesale_qty = get_option('set_min_qty_for_all_product');
+								if ($get_wholesale_qty <= $value['quantity']) {
+									if (get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true) != '') {
+										$wholesale_price = get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true);
+										$value['data']->set_price( $wholesale_price );
+									}
+								}
+							}
+						}
+
+					}
+				}
+			}
 		}
 	}
 

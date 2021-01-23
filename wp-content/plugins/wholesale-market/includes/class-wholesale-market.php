@@ -155,25 +155,20 @@ class Wholesale_Market {
 		$plugin_admin = new Wholesale_Market_Admin( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_filter( 'woocommerce_settings_tabs_array',$plugin_admin, 'ced_add_setting_wholesale_market' ,20);
-		$this->loader->add_action( 'woocommerce_settings_wholesale-market',$plugin_admin , 'output'  );
-		$this->loader->add_action( 'woocommerce_settings_save_wholesale-market',$plugin_admin , 'save' );
-		$this->loader->add_action( 'woocommerce_sections_wholesale-market' , $plugin_admin,'get_sections');
-		$this->loader->add_action( 'woocommerce_product_after_variable_attributes', $plugin_admin, 'ced_variation_wholesale_fields',10,3);
-		$this->loader->add_action( 'woocommerce_save_product_variation', $plugin_admin, 'ced_save_variation_wholesale',10,1);
+		$this->loader->add_filter( 'woocommerce_settings_tabs_array', $plugin_admin, 'ced_add_setting_wholesale_market' , 20);
+		$this->loader->add_action( 'woocommerce_settings_wholesale-market', $plugin_admin , 'ced_output_section'  );
+		$this->loader->add_action( 'woocommerce_settings_save_wholesale-market', $plugin_admin , 'ced_save_setting' );
+		$this->loader->add_action( 'woocommerce_sections_wholesale-market' , $plugin_admin, 'ced_get_sections');
+		$this->loader->add_action( 'woocommerce_product_after_variable_attributes', $plugin_admin, 'ced_variation_wholesale_fields', 10, 3);
+		$this->loader->add_action( 'woocommerce_save_product_variation', $plugin_admin, 'ced_save_variation_wholesale', 10, 1);
 		$this->loader->add_action( 'woocommerce_product_options_pricing', $plugin_admin, 'ced_add_wholesale_price_simple_product');
 		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'ced_save_simple_product_wholesale_price' );
 		$this->loader->add_filter('manage_users_columns', $plugin_admin, 'ced_add_custom_wholesale_columns');
 		$this->loader->add_filter('manage_users_custom_column', $plugin_admin, 'ced_add_value_wholesale_columns', 10, 3);
 		$this->loader->add_action( 'init', $plugin_admin, 'ced_approved_wholesale_customer');
 		$this->loader->add_action( 'init', $plugin_admin, 'ced_add_role_wholesale_customer');
-		//$this->loader->add_action( 'wp_ajax_ced_approve_wholesale_customer',$plugin_admin,  'ced_approved_wholesale_customer' );
-		$this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_admin, 'ced_display_wholesale_price_shop_page');
-		$this->loader->add_action( 'woocommerce_single_product_summary', $plugin_admin, 'ced_display_wholesale_price_single_simple_product' );
-		$this->loader->add_filter( 'woocommerce_available_variation', $plugin_admin, 'ced_show_variation_price',10, 3);
-		$this->loader->add_filter( 'woocommerce_before_calculate_totals', $plugin_admin, 'ced_display_wholesale_price_according_to_qty');
-		
-
+		$this->loader->add_filter( 'woocommerce_admin_settings_sanitize_option_set_min_qty_for_all_product', $plugin_admin, 'ced_validate_woocommerce_admin_settings_sanitize_option', 10, 3 );
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'ced_add_admin_notice');
 	}
 
 	/**
@@ -190,8 +185,11 @@ class Wholesale_Market {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'woocommerce_register_form', $plugin_public, 'ced_add_checkbox_become_wholesale' );
-		//$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'ced_validate_checkbox_field', 10, 3 );
 		$this->loader->add_action( 'woocommerce_created_customer', $plugin_public, 'ced_save_wholesale_checkbox_field' );
+		$this->loader->add_action( 'woocommerce_after_shop_loop_item', $plugin_public, 'ced_display_wholesale_price_shop_page');
+		$this->loader->add_action( 'woocommerce_single_product_summary', $plugin_public, 'ced_display_wholesale_price_single_simple_product' );
+		$this->loader->add_filter( 'woocommerce_available_variation', $plugin_public, 'ced_show_variation_price', 10, 3);
+		$this->loader->add_action( 'woocommerce_before_calculate_totals', $plugin_public, 'ced_display_wholesale_price_according_to_qty');
 	}
 
 	/**

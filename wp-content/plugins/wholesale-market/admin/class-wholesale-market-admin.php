@@ -49,7 +49,7 @@ class Wholesale_Market_Admin {
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 	}
 
 	/**
@@ -95,18 +95,25 @@ class Wholesale_Market_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wholesale-market-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script($this->plugin_name, 'ajax_object',
-			array( 
-				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			)
-		);
-
 	}
-	public function ced_add_setting_wholesale_market($settings_tabs) {
+	
+	/**
+	 * This function is used to add wholesale market tab
+	 * ced_add_setting_wholesale_market
+	 *
+	 * @param  mixed $settings_tabs
+	 * @return void
+	 */
+	public function ced_add_setting_wholesale_market( $settings_tabs) {
 		$settings_tabs['wholesale-market'] = __( 'Wholesale Market' );
 		return $settings_tabs;
 	}
-
+	
+	/**
+	 * get_sections_field
+	 *
+	 * @return void
+	 */
 	public function get_sections_field() {
 	
 		$sections = array(
@@ -117,9 +124,14 @@ class Wholesale_Market_Admin {
 		return apply_filters( 'woocommerce_get_sections_wholesale-market', $sections );
 	}
 
-
-	public function get_sections() {
-        
+	
+	/**
+	 * ced_get_sections
+	 *
+	 * @return void
+	 */
+	public function ced_get_sections() {
+		
 		global $current_section;
 
 		$sections = $this->get_sections_field();
@@ -144,7 +156,7 @@ class Wholesale_Market_Admin {
 	 *
 	 * @return array
 	 */
-	public function get_settings($current_section) {
+	public function ced_get_settings( $current_section) {
 		if ( 'inventory' == $current_section ) {
 			
 			$settings = apply_filters( 'wholesale-market_inventory_settings', array(
@@ -171,18 +183,21 @@ class Wholesale_Market_Admin {
 					'type'     => 'radio',
 					'desc_tip' => __( 'This option is important as it will affect how you input prices. Changing it will not update existing products.', 'woocommerce' ),
 					'options'  => array(
-						'yes' => __( 'Set Min qty on product level' ),
+						'product_level' => __( 'Set Min qty on product level' ),
 						'all_product'  => __( 'Set common min qty for all products' ),
 					),
 				),
 
 				array(
 					'title'    => __( 'Set Min Wholesale Quantity' ),
-					'desc'     => __( 'Text Field to store what text should be shown common min qty for all products.', 'woocommerce' ),
+					'desc'     => __(''),
 					'id'       => 'set_min_qty_for_all_product',
 					'default'  => '',
 					'type'     => 'number',
-					'desc_tip' => true,
+					'custom_attributes' => array( 
+						'min'		=> 0,
+					),
+					'desc_tip' => 'This option is used to set common quantity for all product',
 				),
 					
 				array(
@@ -192,8 +207,7 @@ class Wholesale_Market_Admin {
 					
 			) );
 					
-		}
-		else {
+		} else {
 					
 			$settings = apply_filters( 'wholesale-market_settings', array(
 				
@@ -241,24 +255,54 @@ class Wholesale_Market_Admin {
 				
 		}
 		
-		return apply_filters( 'woocommerce_get_settings_wholesale-market',$settings, $current_section);
+		return apply_filters( 'woocommerce_get_settings_wholesale-market', $settings, $current_section);
 	}
 
 	/**
 	 * Output the settings.
 	 */
-	public function output() {
+	public function ced_output_section() {
 		global $current_section;
-		$settings = $this->get_settings($current_section);
+		$settings = $this->ced_get_settings($current_section);
 		WC_Admin_Settings::output_fields( $settings );
+	}
+	
+	/**
+	 * This function is used to validate min qty setting field
+	 * ced_validate_woocommerce_admin_settings_sanitize_option
+	 *
+	 * @param  mixed $value
+	 * @param  mixed $option
+	 * @param  mixed $raw_value
+	 * @return void
+	 */
+	public function ced_validate_woocommerce_admin_settings_sanitize_option( $value, $option, $raw_value ) {
+		print_r($value);
+		$error   = false;
+		$message = '';
+		$name    = $option['id'];
+		if ($name == 'set_min_qty_for_all_product') {
+			if ($value < 0) {
+				$message =  '<div>Quantity field is required and can not be negative</div>';
+				$error   = true;
+			}
+		} 
+		if ($error == true) {
+			wp_die($message);
+		} else {
+			return $value;
+		}
 	}
 
 	/**
 	 * Save settings.
 	 */
-	public function save() {
+	public function ced_save_setting() {
 		global $current_section;
-		$settings = $this->get_settings($current_section);
+		$settings = $this->ced_get_settings($current_section);
+		foreach ($settings as $key=>$value) {
+
+		}
 		WC_Admin_Settings::save_fields( $settings );
 	}
 	
@@ -271,7 +315,7 @@ class Wholesale_Market_Admin {
 	 * @param  mixed $variation
 	 * @return void
 	 */
-	public function ced_variation_wholesale_fields($loop, $variation_data, $variation) {
+	public function ced_variation_wholesale_fields( $loop, $variation_data, $variation) {
 		if ( 'yes' === get_option( 'check_wholesale_price' ) ) {
 			woocommerce_wp_text_input( 
 				array( 
@@ -284,17 +328,19 @@ class Wholesale_Market_Admin {
 				)
 			);
 		}
-		if ( 'yes' === get_option( 'set_wholesale_qty' ) ) {
-			woocommerce_wp_text_input( 
-				array( 
-					'id'          => 'wholesale_qty[' . $variation->ID . ']', 
-					'label'       => __( 'Wholesale Quantity' ), 
-					'placeholder' => '',
-					'desc_tip'    => 'true',
-					'description' => __('Enter Wholesale Quantity here'),
-					'value'       => get_post_meta( $variation->ID, 'wholesale_min_qty', true )
-				)
-			);
+		if ( 'yes' === get_option( 'wholesale_qty' ) ) {
+			if ( 'product_level' === get_option( 'set_wholesale_qty' ) ) {
+				woocommerce_wp_text_input( 
+					array( 
+						'id'          => 'wholesale_qty[' . $variation->ID . ']', 
+						'label'       => __( 'Wholesale Quantity' ), 
+						'placeholder' => '',
+						'desc_tip'    => 'true',
+						'description' => __('Enter Wholesale Quantity here'),
+						'value'       => get_post_meta( $variation->ID, 'wholesale_min_qty', true )
+					)
+				);
+			}
 		}
 	}
 	
@@ -306,14 +352,20 @@ class Wholesale_Market_Admin {
 	 * @return void
 	 */
 	public function ced_save_variation_wholesale( $post_id) {
-		$wholesale_price = isset($_POST['wholesale_price'][ $post_id ]) ? sanitize_text_field($_POST['wholesale_price'][ $post_id ]) : "";
-		if( ! empty( $wholesale_price ) ) {
-			update_post_meta( $post_id, 'wholesale_price', esc_attr( $wholesale_price ) );
+		$wholesale_price = isset($_POST['wholesale_price'][ $post_id ]) ? sanitize_text_field($_POST['wholesale_price'][ $post_id ]) : '';
+		$wholesale_qty   = isset($_POST['wholesale_qty'][ $post_id ]) ? sanitize_text_field($_POST['wholesale_qty'][ $post_id ]) : '';
+		$check           = false;
+		if ($wholesale_price < 0 || $wholesale_qty < 0) {
+			$check = true;
+			wp_die('quantity and price field can not be negative');
 		}
-
-		$wholesale_qty = sanitize_text_field($_POST['wholesale_qty'][ $post_id ]);
-		if( ! empty( $wholesale_qty ) ) {
-			update_post_meta( $post_id, 'wholesale_min_qty', esc_attr( $wholesale_qty ) );
+		if ($check == false) {
+			if ( ! empty( $wholesale_price ) ) {
+				update_post_meta( $post_id, 'wholesale_price', $wholesale_price );
+			}
+			if ( ! empty( $wholesale_qty ) ) {
+				update_post_meta( $post_id, 'wholesale_min_qty', $wholesale_qty );
+			}
 		}
 	}
 		
@@ -333,16 +385,17 @@ class Wholesale_Market_Admin {
 				'desc_tip' => 'true',
 			) );
 		}
-
-		if ( 'yes' === get_option( 'set_wholesale_qty' ) ) {
-			woocommerce_wp_text_input( 
-				array( 
-					'id' => 'wholesale_qty_for_simple_product',
-					'label' => 'Wholesale Quantity',
-					'description' => 'This is a custom field, you can write here anything you want.',
-					'desc_tip' => 'true',
-				)
-			);
+		if ( 'yes' === get_option( 'wholesale_qty' ) ) {
+			if ( 'product_level' === get_option( 'set_wholesale_qty' ) ) {
+				woocommerce_wp_text_input( 
+					array( 
+						'id' => 'wholesale_qty_for_simple_product',
+						'label' => 'Wholesale Quantity',
+						'description' => 'This is a custom field, you can write here anything you want.',
+						'desc_tip' => 'true',
+					)
+				);
+			}
 		}
 	}
 	
@@ -353,14 +406,21 @@ class Wholesale_Market_Admin {
 	 * @param  mixed $post_id
 	 * @return void
 	 */
-	public function ced_save_simple_product_wholesale_price($post_id ) {
-		$wholesale_price_simple_product = isset($_POST['wholesale_price_for_simple_product']) ? sanitize_text_field($_POST['wholesale_price_for_simple_product']) : "";
-		if ( ! empty( $_POST['wholesale_price_for_simple_product'] ) ) {
-			update_post_meta( $post_id, 'wholesale_price_for_simple_product', esc_attr( $wholesale_price_simple_product ) );
+	public function ced_save_simple_product_wholesale_price( $post_id ) {
+		$wholesale_price_simple_product   = isset($_POST['wholesale_price_for_simple_product']) ? sanitize_text_field($_POST['wholesale_price_for_simple_product']) : '';
+		$wholesale_qty_for_simple_product = isset($_POST['wholesale_qty_for_simple_product']) ? sanitize_text_field($_POST['wholesale_qty_for_simple_product']) : '';
+		$check                            = false;
+		if ($wholesale_price_simple_product < 0 || $wholesale_qty_for_simple_product < 0) {
+			$check = true;
+			wp_die('quantity and price field can not be negative');
 		}
-		$wholesale_qty_for_simple_product = isset($_POST['wholesale_qty_for_simple_product']) ? sanitize_text_field($_POST['wholesale_qty_for_simple_product']) : "";
-		if ( ! empty( $_POST['wholesale_qty_for_simple_product'] ) ) {
-			update_post_meta( $post_id, 'wholesale_qty_for_simple_product', esc_attr( $wholesale_qty_for_simple_product ) );
+		if ($check == false) {
+			if ( ! empty( $_POST['wholesale_price_for_simple_product'] ) ) {
+				update_post_meta( $post_id, 'wholesale_price_for_simple_product', esc_attr( $wholesale_price_simple_product ) );
+			}
+			if ( ! empty( $_POST['wholesale_qty_for_simple_product'] ) ) {
+				update_post_meta( $post_id, 'wholesale_qty_for_simple_product', esc_attr( $wholesale_qty_for_simple_product ) );
+			}
 		}
 	}
 	
@@ -371,7 +431,7 @@ class Wholesale_Market_Admin {
 	 * @param  mixed $column
 	 * @return void
 	 */
-	public function ced_add_custom_wholesale_columns($column) {
+	public function ced_add_custom_wholesale_columns( $column) {
 		$column['Wholesale'] = 'Wholesale';
 		return $column;
 	}
@@ -385,11 +445,12 @@ class Wholesale_Market_Admin {
 	 * @param  mixed $user_id
 	 * @return void
 	 */
-	public function ced_add_value_wholesale_columns($output, $column_name, $user_id) { 
+	public function ced_add_value_wholesale_columns( $output, $column_name, $user_id) { 
 		$checkbox_value = get_user_meta( $user_id, 'become_wholesale', true);
-		if($checkbox_value == "on") {
-			if ( 'Wholesale' == $column_name )
-				return '<form id="approveform" method="get"><input type="hidden" name="user_id" value="'.$user_id.'"><input type="submit" data-id="'.$user_id.'" id="approve_customer_as_wholesale'.$user_id.'" class="approve_customer_as_wholesale" name="approve_customer_as_wholesale'.$user_id.'" value="approve""></form>';
+		if ($checkbox_value == 'on') {
+			if ( 'Wholesale' == $column_name ) {
+				return '<form id="approveform" method="get"><input type="hidden" name="user_id" value="' . $user_id . '"><input type="submit" data-id="' . $user_id . '" id="approve_customer_as_wholesale' . $user_id . '" class="approve_customer_as_wholesale" name="approve_customer_as_wholesale' . $user_id . '" value="approve""></form>';
+			}
 			return $output;
 		}
 	}
@@ -401,10 +462,10 @@ class Wholesale_Market_Admin {
 	 * @return void
 	 */
 	public function ced_approved_wholesale_customer() {
-		$user_id = isset($_GET['user_id']) ? sanitize_text_field($_GET['user_id']) : "";
-		if(isset($_GET['approve_customer_as_wholesale'.$user_id.''])) {
-			update_user_meta( $user_id, 'become_wholesale', "approved");
-			$result = wp_update_user( array( 'ID' => $user_id, 'role' => "Wholesale-Customer" ) );
+		$user_id = isset($_GET['user_id']) ? sanitize_text_field($_GET['user_id']) : '';
+		if (isset($_GET['approve_customer_as_wholesale' . $user_id . ''])) {
+			update_user_meta( $user_id, 'become_wholesale', 'approved');
+			$result = wp_update_user( array( 'ID' => $user_id, 'role' => 'Wholesale-Customer' ) );
 		}
 	}
 	
@@ -415,102 +476,12 @@ class Wholesale_Market_Admin {
 	 * @param  mixed $user_id
 	 * @return void
 	 */
-	public function ced_add_role_wholesale_customer($user_id) {
+	public function ced_add_role_wholesale_customer( $user_id) {
 		add_role('Wholesale-Customer', __(
 			'Wholesale-Customer'),
 			array(
 				'read'            => true, // Allows a user to read
 			)
 		);
-	}
-	public function ced_get_wholesale_price() {
-		global $product;
-		global $post;
-		$product_type = $product->get_type();
-		$display_wholesale_prices_customer = get_option('display_wholesale_prices');
-		if( $display_wholesale_prices_customer == 'wholesaleCustomer') {
-			if(is_user_logged_in()) {
-				if(get_user_meta( get_current_user_id(), 'become_wholesale', true) == "approved"){
-					if($product_type == "simple") {
-						if(get_post_meta($post->ID, 'wholesale_qty_for_simple_product', true) != "") {
-							echo get_post_meta($post->ID, 'wholesale_qty_for_simple_product', true).get_woocommerce_currency_symbol()."</br>";
-						}
-					}
-				}
-			}
-		}
-		if( $display_wholesale_prices_customer == 'allCustomer') {
-			if($product_type == "simple") {
-				if(get_post_meta($post->ID, 'wholesale_qty_for_simple_product', true) != "") {
-					echo get_post_meta($post->ID, 'wholesale_qty_for_simple_product', true).get_woocommerce_currency_symbol()."</br>";
-				}
-			}
-		}
-	}
-
-	
-	/**
-	 * This function is used for display wholesale price on shop page
-	 * ced_display_wholesale_price_shop_page
-	 *
-	 * @return void
-	 */
-	public function ced_display_wholesale_price_shop_page() {
-		$this->ced_get_wholesale_price();
-	}
-	
-	/**
-	 * This function is used for display simple wholesale price on single page
-	 * ced_display_wholesale_price_single_simple_product
-	 *
-	 * @return void
-	 */
-	public function ced_display_wholesale_price_single_simple_product() {
-		$this->ced_get_wholesale_price();
-	}
-	
-	/**
-	 *  This function is used for display variable wholesale price on single page
-	 * ced_show_variation_price
-	 *
-	 * @param  mixed $descriptions
-	 * @param  mixed $product
-	 * @param  mixed $variation
-	 * @return void
-	 */
-	public function ced_show_variation_price($descriptions , $product, $variation){
-		global $product;
-		global $post;
-		$variationData = $variation->get_data();
-		$product_type = $product->get_type();
-		$display_wholesale_prices_customer = get_option('display_wholesale_prices');
-		if( $display_wholesale_prices_customer == 'wholesaleCustomer') {
-			if(is_user_logged_in()) {
-				if(get_user_meta( get_current_user_id(), 'become_wholesale', true) == "approved"){
-					if($product_type == "variable") {
-						$descriptions['price_html'] = get_post_meta($variationData['id'], 'wholesale_price', true);
-						if(get_post_meta($descriptions['variation_id'], 'wholesale_price', true) != "") {
-								$descriptions['price_html'] = get_post_meta($descriptions['variation_id'], 'wholesale_price', true).get_woocommerce_currency_symbol()."</br>";
-						}
-					}
-				}
-			}
-		}
-		if( $display_wholesale_prices_customer == 'allCustomer') {
-			if($product_type == "variable") {
-				if(get_post_meta($descriptions['variation_id'], 'wholesale_price', true) != "") {
-					$descriptions['price_html'] = get_post_meta($descriptions['variation_id'], 'wholesale_price', true).get_woocommerce_currency_symbol()."</br>";
-				}
-			}
-		}
-		return $descriptions;
-	}
-
-	public function ced_display_wholesale_price_according_to_qty($desc) {
-		echo '<pre>';
-		print_r($desc->get_cart());
-		foreach($desc->get_cart() as $key => $value) {
-			echo $value['quantity'];
-		}
 	}
 }

@@ -33,8 +33,10 @@
 		$(".form-table").on('click', '#wholesale_qty' , function() {
 			if ($(this).is(':checked') == true) {
 				$('.forminp-radio').show();
+				$('label[for="set_wholesale_qty"]').show();
 			} else {
 				$('.forminp-radio').hide();
+				$('label[for="set_wholesale_qty"]').hide();
 			}
 		});
 
@@ -43,28 +45,13 @@
 			if (value == "all_product") {
 				$('#set_min_qty_for_all_product').show();
 				$('label[for="set_min_qty_for_all_product"]').show();
-				alert(min_qty);
-			}
-			else {
+			} else {
 				$('#set_min_qty_for_all_product').hide();
 				$('label[for="set_min_qty_for_all_product"]').hide();
 			}
 		});
-		// $('#approveform').on('click', '.approve_customer_as_wholesale' , function() {
-		// 	var id= $(this).data('id');
-		// 	//alert(id);
-		// 	$.ajax({
-		// 		url: ajax_object.ajaxurl,
-		// 		type: 'post',
-		// 		data: {
-		// 			'action':'ced_approve_wholesale_customer',
-		// 			id:id
-		// 		},
-		// 		success: function( response ) {
-		// 			alert(response);
-		// 		},
-		// 	});
-		// });
+
+		
 	});
 
 })( jQuery );
