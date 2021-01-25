@@ -51,7 +51,60 @@
 			}
 		});
 
-		
+		$("#set_min_qty_for_all_product").after("<span class='qty'></span>");
+		$("#set_min_qty_for_all_product").focusout(function(){
+			var qty = $(this).val();
+			if(qty == "") {
+				$(".qty").html("This field is required");
+				$(".qty").css("color","red");
+				return false;
+			}else {
+				if(qty < 0) {
+					$(".qty").html(" Quantity field can not be negative ");
+					$(".qty").css("color","red");
+					$(this).val("");
+					return false;
+				}
+				$(".qty").html("");
+			}
+		});
+
+		$("#wholesale_price_for_simple_product").after("<span class='simple_wholesale_price'></span>");
+		$("#wholesale_price_for_simple_product").focusout(function() {
+			var regular_price = $('#_regular_price').val();
+			var simple_price = $(this).val();
+			if(simple_price < 0) {
+				$(".simple_wholesale_price").html(" Price field can not be negative ");
+				$(".simple_wholesale_price").css("color","red");
+				$(this).val("");
+				return false;
+			}
+			if(parseInt(simple_price) > parseInt(regular_price)) {
+				$(".simple_wholesale_price").html("Wholesale Price must be less than Regular Price");
+				$(".simple_wholesale_price").css("color","red");
+				$(this).val("");
+				return false;
+			}
+			$(".simple_wholesale_price").html("");
+		});	
+
+		$("#wholesale_qty_for_simple_product").after("<span class='simple_wholesale_qty'></span>");
+		$("#wholesale_qty_for_simple_product").focusout(function() {
+			var simple_price = $(this).val();
+			if(simple_price < 0) {
+				$(".simple_wholesale_qty").html("Quantity field can not be negative ");
+				$(".simple_wholesale_qty").css("color","red");
+				$(this).val("");
+				return false;
+			}
+			$(".simple_wholesale_qty").html("");
+		});	
+
+		// $("#variation_wholesale_price").after("<span class='variation_wholesale_error'></span>");
+		// $(".save-variation-changes").click(function() {
+		// 	var id = $("#wholesale_price_id").val();
+		// 	alert(id);
+		// });	
 	});
 
 })( jQuery );

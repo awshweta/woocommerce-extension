@@ -18,7 +18,7 @@
  *
  * @package    Wholesale_Market
  * @subpackage Wholesale_Market/public
- * @author     Shweta Awasthi <shwetaawasthi@cedcoss.com>
+ * author     Shweta Awasthi <shwetaawasthi@cedcoss.com>
  */
 class Wholesale_Market_Public {
 
@@ -26,7 +26,6 @@ class Wholesale_Market_Public {
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
@@ -35,7 +34,6 @@ class Wholesale_Market_Public {
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
@@ -108,8 +106,9 @@ class Wholesale_Market_Public {
 	 */
 	public function ced_add_checkbox_become_wholesale() { ?>
 		<p>
+			<input type="hidden" id="become_wholesale_nonce" name="become_wholesale_nonce" value="<?php echo esc_attr(wp_create_nonce('generate-nonce')); ?>">
 			<input type="checkbox" name="become_wholesale" id="become_wholesale" class="checkbox"/>
-			<label for="become_wholesale"><?php _e( 'Become Wholesale Customer'); ?>
+			<label for="become_wholesale"><?php esc_html_e( 'Become Wholesale Customer'); ?>
 			</label>
 		</p>
 	<?php 
@@ -124,8 +123,10 @@ class Wholesale_Market_Public {
 	 * @return void
 	 */
 	public function ced_save_wholesale_checkbox_field( $user_id) {
-		if (isset($_POST['become_wholesale'])) {
-			update_user_meta( $user_id, 'become_wholesale', sanitize_text_field($_POST['become_wholesale']) );
+		if (isset( $_POST['become_wholesale_nonce'] ) && wp_verify_nonce( sanitize_text_field($_POST['become_wholesale_nonce'], 'become_wholesale_nonce' ) )) {
+			if (isset($_POST['become_wholesale'])) {
+				update_user_meta( $user_id, 'become_wholesale', sanitize_text_field($_POST['become_wholesale']) );
+			}
 		}
 	}
 
@@ -141,21 +142,21 @@ class Wholesale_Market_Public {
 		$product_type                      = $product->get_type();
 		$display_wholesale_prices_customer = get_option('display_wholesale_prices');
 		if ( 'yes' === get_option( 'check_wholesale_price' ) ) {
-			if ( $display_wholesale_prices_customer == 'wholesaleCustomer') {
+			if ('wholesaleCustomer' == $display_wholesale_prices_customer) {
 				if (is_user_logged_in()) {
 					if (get_user_meta( get_current_user_id(), 'become_wholesale', true) == 'approved') {
-						if ($product_type == 'simple') {
+						if ('simple' == $product_type) {
 							if (get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) != '') {
-								echo get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) . get_woocommerce_currency_symbol() . '</br>';
+								echo esc_attr(get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) . get_woocommerce_currency_symbol()) . '</br>';
 							}
 						}
 					}
 				}
 			}
-			if ( $display_wholesale_prices_customer == 'allCustomer') {
-				if ($product_type == 'simple') {
+			if ('allCustomer' == $display_wholesale_prices_customer) {
+				if ('simple' == $product_type) {
 					if (get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) != '') {
-						echo get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) . get_woocommerce_currency_symbol() . '</br>';
+						echo esc_attr(get_post_meta($post->ID, 'wholesale_price_for_simple_product', true) . get_woocommerce_currency_symbol()) . '</br>';
 					}
 				}
 			}
@@ -199,21 +200,21 @@ class Wholesale_Market_Public {
 		$product_type                      = $product->get_type();
 		$display_wholesale_prices_customer = get_option('display_wholesale_prices');
 		if ( 'yes' === get_option( 'check_wholesale_price' ) ) {
-			if ( $display_wholesale_prices_customer == 'wholesaleCustomer') {
+			if ('wholesaleCustomer' == $display_wholesale_prices_customer) {
 				if (is_user_logged_in()) {
-					if (get_user_meta( get_current_user_id(), 'become_wholesale', true) == 'approved') {
-						if ($product_type == 'variable') {
+					if ('approved' == get_user_meta( get_current_user_id(), 'become_wholesale', true)) {
+						if ('variable' == $product_type) {
 							//$descriptions['price_html'] = get_post_meta($variationData['id'], 'wholesale_price', true);
-							if (get_post_meta($descriptions['variation_id'], 'wholesale_price', true) != '') {
+							if (get_post_meta('' != $descriptions['variation_id'], 'wholesale_price', true)) {
 									$descriptions['price_html'] = get_post_meta($descriptions['variation_id'], 'wholesale_price', true) . get_woocommerce_currency_symbol() . '</br>';
 							}
 						}
 					}
 				}
 			}
-			if ( $display_wholesale_prices_customer == 'allCustomer') {
-				if ($product_type == 'variable') {
-					if (get_post_meta($descriptions['variation_id'], 'wholesale_price', true) != '') {
+			if ('allCustomer' == $display_wholesale_prices_customer ) {
+				if ('variable' == $product_type) {
+					if ('' != get_post_meta($descriptions['variation_id'], 'wholesale_price', true)) {
 						$descriptions['price_html'] = get_post_meta($descriptions['variation_id'], 'wholesale_price', true) . get_woocommerce_currency_symbol() . '</br>';
 					}
 				}
@@ -235,11 +236,11 @@ class Wholesale_Market_Public {
 		foreach ($desc->get_cart() as $key => $value) {
 			if ( 'yes' === get_option( 'check_wholesale_price' ) ) {
 				if ( 'yes' === get_option( 'wholesale_qty' ) ) {
-					if ( $display_wholesale_prices_customer == 'wholesaleCustomer') {
+					if ('wholesaleCustomer' == $display_wholesale_prices_customer ) {
 						if (is_user_logged_in()) {
 							if (get_user_meta( get_current_user_id(), 'become_wholesale', true) == 'approved') {
 								if ('product_level' === $set_wholesale_qty) {
-									if ($value['data']->get_type() == 'variation') {
+									if ('variation' == $value['data']->get_type()) {
 										$get_wholesale_qty = get_post_meta($value['variation_id'], 'wholesale_min_qty', true);
 										if ($get_wholesale_qty <= $value['quantity']) {
 											if (get_post_meta($value['variation_id'], 'wholesale_price', true) != '') {
@@ -248,7 +249,7 @@ class Wholesale_Market_Public {
 											}
 										}
 									}
-									if ($value['data']->get_type() == 'simple') {
+									if ('simple' == $value['data']->get_type()) {
 										$get_simple_wholesale_qty = get_post_meta($value['product_id'], 'wholesale_qty_for_simple_product', true);
 										if ($get_simple_wholesale_qty <= $value['quantity']) {
 											if (get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true) != '') {
@@ -259,7 +260,7 @@ class Wholesale_Market_Public {
 									}
 								}
 								if ('all_product' === $set_wholesale_qty) {
-									if ($value['data']->get_type() == 'variation') {
+									if ('variation' == $value['data']->get_type()) {
 										$get_wholesale_qty = get_option('set_min_qty_for_all_product');
 										if ($get_wholesale_qty <= $value['quantity']) {
 											if (get_post_meta($value['variation_id'], 'wholesale_price', true) != '') {
@@ -281,9 +282,9 @@ class Wholesale_Market_Public {
 							}
 						}
 					}
-					if ( $display_wholesale_prices_customer == 'allCustomer') {
+					if ('allCustomer' == $display_wholesale_prices_customer) {
 						if ('product_level' === $set_wholesale_qty) {
-							if ($value['data']->get_type() == 'variation') {
+							if ('variation' == $value['data']->get_type()) {
 								$get_wholesale_qty = get_post_meta($value['variation_id'], 'wholesale_min_qty', true);
 								if ($get_wholesale_qty <= $value['quantity']) {
 									if (get_post_meta($value['variation_id'], 'wholesale_price', true) != '') {
@@ -292,7 +293,7 @@ class Wholesale_Market_Public {
 									}
 								}
 							}
-							if ($value['data']->get_type() == 'simple') {
+							if ('simple' == $value['data']->get_type()) {
 								$get_simple_wholesale_qty = get_post_meta($value['product_id'], 'wholesale_qty_for_simple_product', true);
 								if ($get_simple_wholesale_qty <= $value['quantity']) {
 									if (get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true) != '') {
@@ -303,7 +304,7 @@ class Wholesale_Market_Public {
 							}
 						}
 						if ('all_product' === $set_wholesale_qty) {
-							if ($value['data']->get_type() == 'variation') {
+							if ('variation' == $value['data']->get_type()) {
 								$get_wholesale_qty = get_option('set_min_qty_for_all_product');
 								if ($get_wholesale_qty <= $value['quantity']) {
 									if (get_post_meta($value['variation_id'], 'wholesale_price', true) != '') {
@@ -312,7 +313,7 @@ class Wholesale_Market_Public {
 									}
 								}
 							}
-							if ($value['data']->get_type() == 'simple') {
+							if ('simple' == $value['data']->get_type()) {
 								$get_wholesale_qty = get_option('set_min_qty_for_all_product');
 								if ($get_wholesale_qty <= $value['quantity']) {
 									if (get_post_meta($value['product_id'], 'wholesale_price_for_simple_product', true) != '') {

@@ -22,9 +22,9 @@
  * @since      1.0.0
  * @package    Wholesale_Market
  * @subpackage Wholesale_Market/includes
- * @author     Shweta Awasthi <shwetaawasthi@cedcoss.com>
+ * author     Shweta Awasthi <shwetaawasthi@cedcoss.com>
  */
-class Wholesale_Market_i18n {
+class Wholesale_Market_I18n {
 
 
 	/**

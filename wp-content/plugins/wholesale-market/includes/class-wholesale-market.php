@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Wholesale_Market
  * @subpackage Wholesale_Market/includes
- * @author     Shweta Awasthi <shwetaawasthi@cedcoss.com>
+ * author     Shweta Awasthi <shwetaawasthi@cedcoss.com>
  */
 class Wholesale_Market {
 
@@ -34,7 +34,7 @@ class Wholesale_Market {
 	 * the plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   protected
+	 * access   protected
 	 * @var      Wholesale_Market_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
@@ -43,7 +43,7 @@ class Wholesale_Market {
 	 * The unique identifier of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   protected
+	 * access   protected
 	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
@@ -52,7 +52,7 @@ class Wholesale_Market {
 	 * The current version of the plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   protected
+	 * access   protected
 	 * @var      string    $version    The current version of the plugin.
 	 */
 	protected $version;
@@ -87,7 +87,7 @@ class Wholesale_Market {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Wholesale_Market_Loader. Orchestrates the hooks of the plugin.
-	 * - Wholesale_Market_i18n. Defines internationalization functionality.
+	 * - Wholesale_Market_I18n. Defines internationalization functionality.
 	 * - Wholesale_Market_Admin. Defines all hooks for the admin area.
 	 * - Wholesale_Market_Public. Defines all hooks for the public side of the site.
 	 *
@@ -95,7 +95,7 @@ class Wholesale_Market {
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * access   private
 	 */
 	private function load_dependencies() {
 
@@ -129,15 +129,15 @@ class Wholesale_Market {
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Wholesale_Market_i18n class in order to set the domain and to register the hook
+	 * Uses the Wholesale_Market_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * access   private
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Wholesale_Market_i18n();
+		$plugin_i18n = new Wholesale_Market_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -148,7 +148,7 @@ class Wholesale_Market {
 	 * of the plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * access   private
 	 */
 	private function define_admin_hooks() {
 
@@ -176,7 +176,7 @@ class Wholesale_Market {
 	 * of the plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * access   private
 	 */
 	private function define_public_hooks() {
 
