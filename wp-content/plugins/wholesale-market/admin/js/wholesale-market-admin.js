@@ -100,11 +100,14 @@
 			$(".simple_wholesale_qty").html("");
 		});	
 
-		// $("#variation_wholesale_price").after("<span class='variation_wholesale_error'></span>");
-		// $(".save-variation-changes").click(function() {
-		// 	var id = $("#wholesale_price_id").val();
-		// 	alert(id);
-		// });	
+		$("#variation_wholesale_price").after("<span class='variation_wholesale_error'></span>");
+		$(".save-variation-changes").click(function() {
+			var total_variation = $("#total_variation").val();
+			alert(total_variation);
+			// for(var i=0;i< ) {
+
+			// }
+		});
 	});
 
 })( jQuery );

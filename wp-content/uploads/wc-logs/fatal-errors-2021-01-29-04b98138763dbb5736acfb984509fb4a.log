@@ -1,0 +1,23 @@
+2021-01-29T07:36:36+00:00 CRITICAL require(): Failed opening required 'partials/Display_File_Data.php' (include_path='.:/opt/lampp/lib/php') in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 206
+
+2021-01-29T07:36:37+00:00 CRITICAL require(): Failed opening required 'partials/Display_File_Data.php' (include_path='.:/opt/lampp/lib/php') in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 206
+
+2021-01-29T07:36:57+00:00 CRITICAL require(): Failed opening required 'partials/Display_File_Data.php' (include_path='.:/opt/lampp/lib/php') in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 206
+
+2021-01-29T07:36:58+00:00 CRITICAL require(): Failed opening required 'partials/Display_File_Data.php' (include_path='.:/opt/lampp/lib/php') in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 206
+
+2021-01-29T07:36:59+00:00 CRITICAL require(): Failed opening required 'partials/Display_File_Data.php' (include_path='.:/opt/lampp/lib/php') in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 206
+
+2021-01-29T07:38:04+00:00 CRITICAL require(): Failed opening required 'partials/Display_File_data.php' (include_path='.:/opt/lampp/lib/php') in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 206
+
+2021-01-29T11:36:12+00:00 CRITICAL Uncaught Error: Call to a member function set_variation() on array in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/partials/Display_file_data.php:334
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/partials/Display_file_data.php(385): Display_File_Data->ced_create_variation_attribute(480, Array)
+#1 /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php(252): Display_File_Data->import_product('7948087272', Array)
+#2 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Product_Importer_By_Cedcommerce_Admin->ced_import_json_file_data('')
+#3 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#4 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#5 /opt/lampp/htdocs/wordpress/wp-admin/admin-ajax.php(184): do_action('wp_ajax_ced_imp...')
+#6 {main}
+  thrown in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/partials/Display_file_data.php on line 334
+

@@ -168,7 +168,6 @@ class Wholesale_Market {
 		$this->loader->add_action( 'init', $plugin_admin, 'ced_approved_wholesale_customer');
 		$this->loader->add_action( 'init', $plugin_admin, 'ced_add_role_wholesale_customer');
 		$this->loader->add_filter( 'woocommerce_admin_settings_sanitize_option_set_min_qty_for_all_product', $plugin_admin, 'ced_validate_woocommerce_admin_settings_sanitize_option', 10, 3 );
-		$this->loader->add_action( 'admin_notices', $plugin_admin, 'ced_add_admin_notice');
 	}
 
 	/**

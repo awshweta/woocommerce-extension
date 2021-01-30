@@ -1,0 +1,19 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+ .wp-list-table .column-name {
+	width:45%;
+ }
+ .wp-list-table .column-sku {
+	width : 10%;
+ }
+ .wp-list-table .column-price {
+	width:15%;
+ }
+ .wp-list-table .column-stock {
+	width:15%;
+ }
+ .wp-list-table .column-images img {
+	height:50px;
+ }

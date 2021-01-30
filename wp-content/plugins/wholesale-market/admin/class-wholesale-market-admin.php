@@ -338,17 +338,6 @@ class Wholesale_Market_Admin {
 					'value'       => wp_create_nonce('generate-nonce')
 				)
 			);
-
-			woocommerce_wp_text_input( 
-				array( 
-					'id'          => 'wholesale_price_id',
-					'label' => '', 
-					'placeholder' => '',
-					'type'              => 'hidden',
-					'class' => 'wholesale_price_id',
-					'value'       => $variation->ID
-				)
-			);
 		
 			if ( 'yes' === get_option( 'wholesale_qty' ) ) {
 				if ( 'product_level' === get_option( 'set_wholesale_qty' ) ) {
