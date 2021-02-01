@@ -266,8 +266,6 @@ class Display_File_Data extends WP_List_Table {
 		$unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
 		$filename         = basename( $unique_file_name ); // Create image file name
 
-		print_r($image_name);
-
 		//Check folder permission and define file location
 		if ( wp_mkdir_p( $upload_dir['path'] ) ) {
 			$file = $upload_dir['path'] . '/' . $filename;
@@ -322,7 +320,7 @@ class Display_File_Data extends WP_List_Table {
 				$str .= $attr_value['options'][$i] . '|';
 			}
 			$str .= $attr_value['options'][$i];
-			///var_dump($str);
+			//var_dump($str);
 			$attributes[$attribute_name] = array(
 				'name'          => sanitize_text_field($attribute_name),
 				'value'         => sanitize_text_field($str),
@@ -391,7 +389,7 @@ class Display_File_Data extends WP_List_Table {
 									if ($variation_key == $image_key) {
 										$this->ced_add_image($variation_id, $image_value);
 									}
-								}
+								} 
 							}
 						}
 					} else {
@@ -410,7 +408,13 @@ class Display_File_Data extends WP_List_Table {
 		<?php 
 		}
 	}
-
+	
+	/**
+	 * This function is used for bulk action
+	 * process_bulk_action
+	 *
+	 * @return void
+	 */
 	public function process_bulk_action() {
 
 		//Detect when a bulk action is being triggered...
@@ -439,7 +443,6 @@ class Display_File_Data extends WP_List_Table {
 		  // loop over the array of record IDs and delete them
 			foreach ( $import_ids as $id ) {
 			  self::import_product( $id );
-	  
 			}
 	  
 		  wp_redirect( esc_url( add_query_arg() ) );

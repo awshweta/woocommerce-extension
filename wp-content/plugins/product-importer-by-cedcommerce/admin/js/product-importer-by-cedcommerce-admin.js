@@ -41,12 +41,20 @@
 				verify_nonce_for_import_single_product : myAjaxObject.nonce_verifify,
 			},
 			dataType :"html",
+			beforeSend: function(){
+				$('#loader').show();
+			},
+			complete: function(){
+				$('#loader').hide();
+			},
 			success: function( response ) {
 				//console.log(response);
 				$('#admin_notice').html(response);
 				$('html, body').animate({
 					scrollTop: parseInt($("#admin_notice").offset().top)
 				}, 2000);
+				$('#import').val("already imported");
+				$('#import').attr('disabled', 'disabled');
 			},
 		});
 	});
@@ -71,8 +79,13 @@
 					verify_nonce_for_import_bulk : myAjaxObject.nonce_verifify,
 				},
 				dataType :"html",
+				beforeSend: function(){
+					$('#loader').show();
+				},
+				complete: function(){
+					$('#loader').hide();
+				},
 				success: function( response ) {
-					///console.log(admin_notice);
 					$('#admin_notice').html(response);
 					$('html, body').animate({
 						scrollTop: parseInt($("#admin_notice").offset().top)

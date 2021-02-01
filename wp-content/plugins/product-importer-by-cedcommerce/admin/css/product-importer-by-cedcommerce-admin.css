@@ -3,17 +3,29 @@
  * included in this file.
  */
  .wp-list-table .column-name {
-	width:45%;
+	width:43%;
  }
  .wp-list-table .column-sku {
-	width : 10%;
+	width : 5%;
  }
  .wp-list-table .column-price {
-	width:15%;
+	width: 5%;
  }
  .wp-list-table .column-stock {
-	width:15%;
+	width: 5%;
  }
  .wp-list-table .column-images img {
 	height:50px;
+ }
+ .wp-list-table .column-action {
+	width:15%;
+ }
+ #loader {
+	display: none;
+	height: 20%;
+	width: 20%;
+	opacity: 60%;
+	position: absolute;
+	margin-left: 20%;
+	margin-top: 5%;
  }

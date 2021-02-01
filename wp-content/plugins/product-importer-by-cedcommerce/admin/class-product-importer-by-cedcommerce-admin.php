@@ -118,7 +118,8 @@ class Product_Importer_By_Cedcommerce_Admin {
 	 */
 	public function ced_import_product() {
 		$message = '';
-		if (isset( $_POST['nonce_verification'] ) && wp_verify_nonce( sanitize_text_field($_POST['nonce_verification'], 'nonce_verification' ) )) {
+		$nonce_verification_upload_file = isset( $_POST['nonce_verification'] ) ? sanitize_text_field($_POST['nonce_verification']) : '';
+		if ( wp_verify_nonce( $nonce_verification_upload_file, 'nonce_verification' )) {
 			if (isset($_POST['save_upload_file'])) {
 				$filename   = isset($_FILES['file']['name']) ? basename(sanitize_text_field($_FILES['file']['name'])) : '';
 				$filetype   = isset($_FILES['file']['type']) ? sanitize_text_field($_FILES['file']['type']) : '';
@@ -152,6 +153,8 @@ class Product_Importer_By_Cedcommerce_Admin {
 					}
 					$temp_name = isset($_FILES['file']['tmp_name']) ? sanitize_text_field($_FILES['file']['tmp_name']) : '';
 					move_uploaded_file($temp_name, $upload_dir);
+				} else {
+					$message = 'please select only json file';
 				}
 			}
 		}
@@ -160,15 +163,19 @@ class Product_Importer_By_Cedcommerce_Admin {
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<div id="admin_notice"></div>
+			<div id="loader">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="image">
+			</div>
 			<form class="wc-progress-form-content woocommerce-importer" enctype="multipart/form-data" method="post">
-				<div><?php echo esc_attr($message); ?></div>
+				<?php if ('' != $message) { ?>
+					<div class="notice notice-success is-dismissible"><p><?php esc_attr_e($message); ?></p></div>
+				<?php } ?>
 				<div>
-					<input type="hidden" id="nonce_verification" name="nonce_verification" value="<?php wp_create_nonce('generate-nonce'); ?>"/>	
+					<input type="hidden" id="nonce_verification" name="nonce_verification" value="<?php echo esc_attr(wp_create_nonce('nonce_verification')); ?>"/>	
 					<input type="file" id="upload" name="file"/>
 					<button type="submit" class="button button-primary button-next" value="<?php esc_attr_e( 'Upload file' ); ?>" name="save_upload_file"><?php esc_html_e( 'Upload file'); ?></button>
 				</div>
 				<h1>Select File</h1>
-				<input type="hidden" id="nonce_verification_file" name="nonce_verification_file" value="<?php echo esc_attr(wp_create_nonce('generate-nonce_for_files')); ?>"/>	
 				<select id="selected_file">
 					<?php 
 						$uploaded_files = get_option('uploaded_files');
@@ -263,7 +270,7 @@ class Product_Importer_By_Cedcommerce_Admin {
 		$verify_nonce_for_import_bulk = isset( $_POST['verify_nonce_for_import_bulk'] ) ? sanitize_text_field($_POST['verify_nonce_for_import_bulk']) : '';
 		if ( wp_verify_nonce( $verify_nonce_for_import_bulk, 'nonce_verifify' )) {
 			if ( isset($_POST['selected_id']) ) {
-				$ids      = sanitize_key($_POST['selected_id']);
+				$ids = array_map( 'sanitize_text_field', $_POST['selected_id'] );
 			}
 			$filename = isset($_POST['file']) ? sanitize_text_field($_POST['file']) : '';
 			require 'partials/Display_file_data.php';
@@ -274,6 +281,7 @@ class Product_Importer_By_Cedcommerce_Admin {
 			$fileData                 = json_decode($file_data, true);
 			$Display_File_Data        = new Display_File_Data();
 			$Display_File_Data->items = $fileData;
+			//echo $ids;
 			if ( is_array( $ids ) ) {
 				foreach ($ids as $key=>$id) {
 					$Display_File_Data->import_product(sanitize_text_field($id), $fileData);
