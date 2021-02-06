@@ -84,7 +84,7 @@ class Display_File_Data extends WP_List_Table {
 					return 'simple';
 				}
 			case 'action':
-				return '<input type="button" data-id=' . $item['item']['item_id'] . ' id="import"  name="import" value="import">';
+				return '<input type="button" data-id=' . $item['item']['item_id'] . ' id="import" class="' . $item['item']['item_id'] . '" name="import" value="import">';
 			default:
 				return print_r( $item, true ) ; //Show the whole array for troubleshooting purposes
 		}

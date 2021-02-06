@@ -1,0 +1,18 @@
+2021-02-03T12:53:45+00:00 CRITICAL Uncaught Error: Cannot use object of type stdClass as array in /opt/lampp/htdocs/wordpress/wp-content/plugins/dropbox-for-product-images/admin/class-dropbox-for-product-images-admin.php:220
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Dropbox_For_Product_Images_Admin->ced_dropbox_upload_image('')
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#2 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#3 /opt/lampp/htdocs/wordpress/wp-admin/admin-ajax.php(184): do_action('wp_ajax_ced_dro...')
+#4 {main}
+  thrown in /opt/lampp/htdocs/wordpress/wp-content/plugins/dropbox-for-product-images/admin/class-dropbox-for-product-images-admin.php on line 220
+
+2021-02-03T12:54:04+00:00 CRITICAL Uncaught Error: Cannot use object of type stdClass as array in /opt/lampp/htdocs/wordpress/wp-content/plugins/dropbox-for-product-images/admin/class-dropbox-for-product-images-admin.php:220
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Dropbox_For_Product_Images_Admin->ced_dropbox_upload_image('')
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#2 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#3 /opt/lampp/htdocs/wordpress/wp-admin/admin-ajax.php(184): do_action('wp_ajax_ced_dro...')
+#4 {main}
+  thrown in /opt/lampp/htdocs/wordpress/wp-content/plugins/dropbox-for-product-images/admin/class-dropbox-for-product-images-admin.php on line 220
+

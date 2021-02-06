@@ -160,7 +160,7 @@ class Product_Importer_By_Cedcommerce {
 		$this->loader->add_action( 'wp_ajax_ced_display_json_file_data', $plugin_admin, 'ced_display_json_file_data' );
 		$this->loader->add_action( 'wp_ajax_ced_import_json_file_data', $plugin_admin, 'ced_import_json_file_data' );
 		$this->loader->add_action( 'wp_ajax_ced_bulk_import_product', $plugin_admin, 'ced_bulk_import_product' );
-		
+		$this->loader->add_action( 'wp_ajax_ced_import_order_json_file_data', $plugin_admin, 'ced_import_order_json_file_data' );
 	}
 
 	/**

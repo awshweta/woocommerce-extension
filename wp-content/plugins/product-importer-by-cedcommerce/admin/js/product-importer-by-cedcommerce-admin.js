@@ -51,10 +51,10 @@
 				//console.log(response);
 				$('#admin_notice').html(response);
 				$('html, body').animate({
-					scrollTop: parseInt($("#admin_notice").offset().top)
+					scrollTop: parseInt($("body").offset().top)
 				}, 2000);
-				$('#import').val("already imported");
-				$('#import').attr('disabled', 'disabled');
+				$('.'+id).val("already imported");
+				$('.'+id).attr('disabled', 'disabled');
 			},
 		});
 	});
@@ -88,7 +88,7 @@
 				success: function( response ) {
 					$('#admin_notice').html(response);
 					$('html, body').animate({
-						scrollTop: parseInt($("#admin_notice").offset().top)
+						scrollTop: parseInt($("body").offset().top)
 					}, 2000);
 				},
 			});
@@ -110,6 +110,27 @@
 				success: function( response ) {
 					//console.log(response);
 					$('#display_json_file_content').html(response);
+				},
+			});
+		});
+
+		$('#selected_order_file').on('change', function() {
+			var order_file = $(this).val();
+			//alert(order_file);
+			$.ajax({
+				url: ajax_object.ajaxurl,
+				type: 'post',
+				data: {
+					'action':'ced_import_order_json_file_data',
+					file : order_file,
+					verify_nonce_for_order_file : myAjaxObject.nonce_verifify,
+				},
+				dataType :"html",
+				success: function( response ) {
+					$('#admin_notice').html(response);
+					$('html, body').animate({
+						scrollTop: parseInt($("body").offset().top)
+					}, 2000);
 				},
 			});
 		});

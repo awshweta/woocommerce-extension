@@ -1,0 +1,37 @@
+2021-02-02T04:00:12+00:00 CRITICAL Uncaught Error: Call to a member function add_item() on null in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php:393
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php(441): Product_Importer_By_Cedcommerce_Admin->ced_add_tax(Array)
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Product_Importer_By_Cedcommerce_Admin->ced_import_order_json_file_data('')
+#2 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#3 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#4 /opt/lampp/htdocs/wordpress/wp-admin/admin-ajax.php(184): do_action('wp_ajax_ced_imp...')
+#5 {main}
+  thrown in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 393
+
+2021-02-02T05:07:41+00:00 CRITICAL Uncaught Error: Call to a member function get_id() on bool in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php:397
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Product_Importer_By_Cedcommerce_Admin->ced_import_order_json_file_data('')
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#2 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#3 /opt/lampp/htdocs/wordpress/wp-admin/admin-ajax.php(184): do_action('wp_ajax_ced_imp...')
+#4 {main}
+  thrown in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 397
+
+2021-02-02T05:08:36+00:00 CRITICAL Uncaught Error: Call to a member function get_id() on bool in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php:397
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Product_Importer_By_Cedcommerce_Admin->ced_import_order_json_file_data('')
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#2 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#3 /opt/lampp/htdocs/wordpress/wp-admin/admin-ajax.php(184): do_action('wp_ajax_ced_imp...')
+#4 {main}
+  thrown in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 397
+
+2021-02-02T05:42:28+00:00 CRITICAL Uncaught Error: Call to a member function get_id() on null in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php:404
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(287): Product_Importer_By_Cedcommerce_Admin->ced_import_order_json_file_data('')
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#2 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(484): WP_Hook->do_action(Array)
+#3 /opt/lampp/htdocs/wordpress/wp-admin/admin-ajax.php(184): do_action('wp_ajax_ced_imp...')
+#4 {main}
+  thrown in /opt/lampp/htdocs/wordpress/wp-content/plugins/product-importer-by-cedcommerce/admin/class-product-importer-by-cedcommerce-admin.php on line 404
+

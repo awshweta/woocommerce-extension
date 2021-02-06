@@ -37,6 +37,14 @@ class Product_Importer_By_Cedcommerce_Activator {
 		if (! is_dir($upload_dir)) {
 			mkdir( $upload_dir, 0777 );
 		}
+
+		$upload     = wp_upload_dir();
+		$upload_dir = $upload['basedir'];
+		$upload_dir = $upload_dir . '/upload_order_jsonFile';
+		//echo $upload_dir;
+		if (! is_dir($upload_dir)) {
+			mkdir( $upload_dir, 0777 );
+		}
 	}
 
 }
